@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -127,20 +128,19 @@
         resultContainer.innerText = 'جاري الاتصال الآمن وعرض الأسعار الفورية...';
 
         try {
-            const targetUrl = "https://binance.com" + crypto;
-            const proxyUrl = "https://allorigins.win" + encodeURIComponent(targetUrl);
+            // كود نقي ومحمي تماماً من التشويه
+            var p1 = "https://allorigins.win";
+            var p2 = "https://binance.com";
+            var finalUrl = p1 + encodeURIComponent(p2 + crypto);
             
-            const response = await fetch(proxyUrl);
+            var response = await fetch(finalUrl);
+            if (!response.ok) throw new Error("HTTP error " + response.status);
             
-            if (!response.ok) {
-                throw new Error("HTTP error! status: " + response.status);
-            }
+            var wrapperData = await response.json();
+            var data = JSON.parse(wrapperData.contents);
             
-            const wrapperData = await response.json();
-            const data = JSON.parse(wrapperData.contents);
-            
-            const priceInUSD = parseFloat(data.price);
-            const total = amount * priceInUSD;
+            var priceInUSD = parseFloat(data.price);
+            var total = amount * priceInUSD;
 
             resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString(undefined, {maximumFractionDigits: 2}) + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الحية الآن: $` + priceInUSD.toLocaleString(undefined, {maximumFractionDigits: 2}) + `</small>`;
         } catch (error) {
