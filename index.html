@@ -116,10 +116,7 @@ html
 
         try {
             // تركيب الرابط برمجياً وبشكل آمن تماماً ضد التشويه النصي
-            const part1 = "https://min-api.";
-            const part2 = "://cryptocompare.com";
-            const part3 = "price?fsym=" + crypto + "&tsyms=USD";
-            const finalUrl = part1 + part2 + part3;
+            const finalUrl = `https://cryptocompare.com{crypto}&tsyms=USD`
 
             const response = await fetch(finalUrl);
             const data = await response.json();
