@@ -116,7 +116,7 @@ html
 
         try {
             // تركيب الرابط برمجياً وبشكل آمن تماماً ضد التشويه النصي
-            const finalUrl = `https://cryptocompare.com{crypto}&tsyms=USD`
+const finalUrl = "https://cryptocompare.com" + crypto + "&tsyms=USD";
 
             const response = await fetch(finalUrl);
             const data = await response.json();
