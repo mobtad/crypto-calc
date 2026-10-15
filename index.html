@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -128,10 +127,10 @@ html
         resultContainer.innerText = 'جاري الاتصال الآمن وعرض الأسعار الفورية...';
 
         try {
-            // كود نقي ومحمي تماماً من التشويه
-            var p1 = "https://allorigins.win";
-            var p2 = "https://binance.com";
-            var finalUrl = p1 + encodeURIComponent(p2 + crypto);
+            // تصحيح بناء المسار الكامل بشكل معزول ومحمي
+            var proxyBase = "https://allorigins.win";
+            var binanceApi = "https://binance.com" + crypto;
+            var finalUrl = proxyBase + encodeURIComponent(binanceApi);
             
             var response = await fetch(finalUrl);
             if (!response.ok) throw new Error("HTTP error " + response.status);
