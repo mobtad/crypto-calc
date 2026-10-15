@@ -130,8 +130,7 @@ html
         try {
             // استخدام خادم وسيط عالمي لتخطي جدران الحماية تماماً
             const targetUrl = "https://binance.com" + crypto;
-            const proxyUrl = "https://allorigins.win" + encodeURIComponent(targetUrl);
-            
+            const proxyUrl = "https://allorigins.win" + encodeURIComponent(targetUrl);           
             const response = await fetch(proxyUrl);
             
             if (!response.ok) {
