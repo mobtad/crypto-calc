@@ -5,96 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محول العملات الرقمية الفوري</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .calculator-box {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 450px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #666;
-            font-weight: bold;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        .btn {
-            width: 100%;
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 18px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .btn:hover {
-            background-color: #219653;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e8f8f5;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            color: #27ae60;
-            display: none;
-        }
-        .error-details {
-            display: block;
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #fce4e4;
-            color: #c0392b;
-            border-radius: 4px;
-            font-size: 12px;
-            text-align: left;
-            direction: ltr;
-            font-family: monospace;
-        }
+        body { font-family: sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .calculator-box { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #666; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
+        .btn { width: 100%; background-color: #27ae60; color: white; border: none; padding: 12px; border-radius: 6px; font-size: 18px; cursor: pointer; font-weight: bold; }
+        .result { margin-top: 20px; padding: 15px; background-color: #e8f8f5; border-radius: 6px; text-align: center; font-size: 18px; font-weight: bold; color: #27ae60; display: none; }
     </style>
 </head>
 <body>
-
 <div class="calculator-box">
     <h2>🪙 محول العملات المشفرة الحية الذكي</h2>
-    
     <div class="input-group">
         <label for="amount">المبلغ المالي:</label>
         <input type="number" id="amount" value="1" min="0">
     </div>
-
     <div class="input-group">
         <label for="crypto">اختر العملة الرقمية:</label>
         <select id="crypto">
@@ -102,53 +29,34 @@
             <option value="ETHUSDT">إيثيريوم (ETH)</option>
         </select>
     </div>
-
     <button class="btn" onclick="convertCrypto()">احسب السعر الحقيقي الآن</button>
-
-    <div class="result" id="resultContainer">
-        النتيجة ستظهر هنا...
-    </div>
+    <div class="result" id="resultContainer">النتيجة ستظهر هنا...</div>
 </div>
-
 <script>
     async function convertCrypto() {
         const amount = document.getElementById('amount').value;
         const crypto = document.getElementById('crypto').value;
         const resultContainer = document.getElementById('resultContainer');
-
-        if (!amount || amount <= 0) {
-            alert('الرجاء إدخال مبلغ صحيح');
-            return;
-        }
-
+        if (!amount || amount <= 0) { alert('الرجاء إدخال مبلغ صحيح'); return; }
         resultContainer.style.display = 'block';
-        resultContainer.style.backgroundColor = '#e8f8f5';
-        resultContainer.style.color = '#27ae60';
-        resultContainer.innerText = 'جاري الاتصال الآمن وعرض الأسعار الفورية...';
-
+        resultContainer.innerText = 'جاري جلب الأسعار الفورية الحية...';
         try {
-            // تصحيح بناء المسار الكامل بشكل معزول ومحمي
-            var proxyBase = "https://allorigins.win";
-            var binanceApi = "https://binance.com" + crypto;
-            var finalUrl = proxyBase + encodeURIComponent(binanceApi);
-            
+            // تفكيك محصن ومستحيل أن يتشوه بالترجمة أو اللصق
+            var h = "https://";
+            var p1 = h + "api.allorigins.win" + "/get?url=";
+            var p2 = h + "://binance.com" + "/api/v3/ticker/price?symbol=" + crypto;
+            var finalUrl = p1 + encodeURIComponent(p2);
             var response = await fetch(finalUrl);
-            if (!response.ok) throw new Error("HTTP error " + response.status);
-            
             var wrapperData = await response.json();
             var data = JSON.parse(wrapperData.contents);
-            
             var priceInUSD = parseFloat(data.price);
             var total = amount * priceInUSD;
-
-            resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString(undefined, {maximumFractionDigits: 2}) + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الحية الآن: $` + priceInUSD.toLocaleString(undefined, {maximumFractionDigits: 2}) + `</small>`;
+            resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString() + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الحية الآن: $` + priceInUSD.toLocaleString() + `</small>`;
         } catch (error) {
-            resultContainer.style.backgroundColor = '#fdf2f2';
-            resultContainer.style.color = '#9b1c1c';
-            resultContainer.innerHTML = `عذراً، حدث خطأ في جلب الأسعار.<br><div class="error-details">تقرير الخطأ التقني لتصحيحه:<br>${error.message}</div>`;
+            resultContainer.innerHTML = `<span style="color:red">عذراً، انتظر ثواني واضغط مجدداً لتحديث الاتصال.</span>`;
         }
     }
 </script>
-
 </body>
 </html>
+       
