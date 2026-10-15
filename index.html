@@ -1,0 +1,132 @@
+html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول العملات الرقمية الفوري</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .calculator-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .btn {
+            width: 100%;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #219653;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f8f5;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #27ae60;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-box">
+    <h2>🪙 محول العملات المشفرة</h2>
+    
+    <div class="input-group">
+        <label for="amount">المبلغ المالي:</label>
+        <input type="number" id="amount" value="100" min="0">
+    </div>
+
+    <div class="input-group">
+        <label for="crypto">اختر العملة الرقمية:</label>
+        <select id="crypto">
+            <option value="BTC">بيتكوين (BTC)</option>
+            <option value="ETH">إيثيريوم (ETH)</option>
+            <option value="USDT">تيثر (USDT)</option>
+        </select>
+    </div>
+
+    <button class="btn" onclick="convertCrypto()">احسب السعر الآن</button>
+
+    <div class="result" id="resultContainer">
+        النتيجة ستظهر هنا...
+    </div>
+</div>
+
+<script>
+    function convertCrypto() {
+        const amount = document.getElementById('amount').value;
+        const crypto = document.getElementById('crypto').value;
+        const resultContainer = document.getElementById('resultContainer');
+
+        if (!amount || amount <= 0) {
+            alert('الرجاء إدخال مبلغ صحيح');
+            return;
+        }
+
+        resultContainer.style.display = 'block';
+        
+        // أسعار ثابتة ومباشرة لتجنب مشاكل روابط الإنترنت في هذه الخطوة
+        let priceInUSD = 1;
+        if (crypto === "BTC") {
+            priceInUSD = 65000; 
+        } else if (crypto === "ETH") {
+            priceInUSD = 3500; 
+        } else if (crypto === "USDT") {
+            priceInUSD = 1; 
+        }
+
+        const total = amount * priceInUSD;
+        resultContainer.innerHTML = `القيمة الإجمالية التقريبية: <br><span style="font-size: 24px;">$` + total.toLocaleString() + ` USD</span>`;
+    }
+</script>
+
+</body>
+</html>
