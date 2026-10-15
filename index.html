@@ -125,12 +125,12 @@ html
         resultContainer.style.display = 'block';
         resultContainer.style.backgroundColor = '#e8f8f5';
         resultContainer.style.color = '#27ae60';
-        resultContainer.innerText = 'جاري تخطي الحظر وجلب الأسعار عبر خادم وسيط آمن...';
+        resultContainer.innerText = 'جاري الاتصال الآمن وعرض الأسعار الفورية...';
 
         try {
-            // استخدام خادم وسيط عالمي لتخطي جدران الحماية تماماً
             const targetUrl = "https://binance.com" + crypto;
-            const proxyUrl = "https://allorigins.win" + encodeURIComponent(targetUrl);           
+            const proxyUrl = "https://allorigins.win" + encodeURIComponent(targetUrl);
+            
             const response = await fetch(proxyUrl);
             
             if (!response.ok) {
