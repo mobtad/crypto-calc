@@ -72,6 +72,18 @@ html
             color: #27ae60;
             display: none;
         }
+        .error-details {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #fce4e4;
+            color: #c0392b;
+            border-radius: 4px;
+            font-size: 12px;
+            text-align: left;
+            direction: ltr;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
@@ -112,25 +124,36 @@ html
         }
 
         resultContainer.style.display = 'block';
-        resultContainer.innerText = 'جاري جلب الأسعار الحقيقية المباشرة من السوق...';
+        resultContainer.style.backgroundColor = '#e8f8f5';
+        resultContainer.style.color = '#27ae60';
+        resultContainer.innerText = 'جاري الاتصال بالبورصة العالمية وجلب الأسعار الحية...';
 
         try {
-            // تركيب الرابط برمجياً وبشكل آمن تماماً ضد التشويه النصي
-const finalUrl = "https://cryptocompare.com" + crypto + "&tsyms=USD";
-
-            const response = await fetch(finalUrl);
+            const url = "https://cryptocompare.com" + crypto + "&tsyms=USD";
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+                throw new Error("HTTP error! status: " + response.status);
+            }
+            
             const data = await response.json();
             
+            if (data.Response === "Error") {
+                throw new Error(data.Message);
+            }
+
             const priceInUSD = data.USD;
             const total = amount * priceInUSD;
 
-            resultContainer.innerHTML = `القيمة الإجمالية في السوق الحالية: <br><span style="font-size: 24px;">$` + total.toLocaleString() + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الواحدة الآن: $` + priceInUSD.toLocaleString() + `</small>`;
+            resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString() + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الواحدة الآن: $` + priceInUSD.toLocaleString() + `</small>`;
         } catch (error) {
-            resultContainer.innerText = 'عذراً، حدث خطأ في جلب الأسعار الحية. تأكد من الإنترنت وحاول مجدداً.';
-            console.error(error);
+            resultContainer.style.backgroundColor = '#fdf2f2';
+            resultContainer.style.color = '#9b1c1c';
+            resultContainer.innerHTML = `عذراً، حدث خطأ في جلب الأسعار.<br><div class="error-details">تقرير الخطأ التقني للتصحيح:<br>${error.message}</div>`;
         }
     }
 </script>
 
 </body>
 </html>
+  
