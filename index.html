@@ -89,7 +89,7 @@ html
 <body>
 
 <div class="calculator-box">
-    <h2>🪙 محول العملات المشفرة الحية (Binance)</h2>
+    <h2>🪙 محول العملات المشفرة الحية الذكي</h2>
     
     <div class="input-group">
         <label for="amount">المبلغ المالي:</label>
@@ -125,23 +125,26 @@ html
         resultContainer.style.display = 'block';
         resultContainer.style.backgroundColor = '#e8f8f5';
         resultContainer.style.color = '#27ae60';
-        resultContainer.innerText = 'جاري الاتصال ببورصة بينانس وجلب الأسعار الفورية...';
+        resultContainer.innerText = 'جاري تخطي الحظر وجلب الأسعار عبر خادم وسيط آمن...';
 
         try {
-            // الاتصال المباشر ببورصة بينانس العالمية المفتوحة في الجزائر
-            const url = "https://binance.com" + crypto;
-            const response = await fetch(url);
+            // استخدام خادم وسيط عالمي لتخطي جدران الحماية تماماً
+            const targetUrl = "https://binance.com" + crypto;
+            const proxyUrl = "https://allorigins.win" + encodeURIComponent(targetUrl);
+            
+            const response = await fetch(proxyUrl);
             
             if (!response.ok) {
                 throw new Error("HTTP error! status: " + response.status);
             }
             
-            const data = await response.json();
+            const wrapperData = await response.json();
+            const data = JSON.parse(wrapperData.contents);
             
             const priceInUSD = parseFloat(data.price);
             const total = amount * priceInUSD;
 
-            resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString(undefined, {maximumFractionDigits: 2}) + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الحية في بينانس الآن: $` + priceInUSD.toLocaleString(undefined, {maximumFractionDigits: 2}) + `</small>`;
+            resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString(undefined, {maximumFractionDigits: 2}) + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الحية الآن: $` + priceInUSD.toLocaleString(undefined, {maximumFractionDigits: 2}) + `</small>`;
         } catch (error) {
             resultContainer.style.backgroundColor = '#fdf2f2';
             resultContainer.style.color = '#9b1c1c';
