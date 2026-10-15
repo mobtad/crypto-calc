@@ -89,7 +89,7 @@ html
 <body>
 
 <div class="calculator-box">
-    <h2>🪙 محول العملات المشفرة الحية</h2>
+    <h2>🪙 محول العملات المشفرة الحية (Binance)</h2>
     
     <div class="input-group">
         <label for="amount">المبلغ المالي:</label>
@@ -99,9 +99,8 @@ html
     <div class="input-group">
         <label for="crypto">اختر العملة الرقمية:</label>
         <select id="crypto">
-            <option value="BTC">بيتكوين (BTC)</option>
-            <option value="ETH">إيثيريوم (ETH)</option>
-            <option value="USDT">تيثر (USDT)</option>
+            <option value="BTCUSDT">بيتكوين (BTC)</option>
+            <option value="ETHUSDT">إيثيريوم (ETH)</option>
         </select>
     </div>
 
@@ -126,10 +125,11 @@ html
         resultContainer.style.display = 'block';
         resultContainer.style.backgroundColor = '#e8f8f5';
         resultContainer.style.color = '#27ae60';
-        resultContainer.innerText = 'جاري الاتصال بالبورصة العالمية وجلب الأسعار الحية...';
+        resultContainer.innerText = 'جاري الاتصال ببورصة بينانس وجلب الأسعار الفورية...';
 
         try {
-            const url = "https://cryptocompare.com" + crypto + "&tsyms=USD";
+            // الاتصال المباشر ببورصة بينانس العالمية المفتوحة في الجزائر
+            const url = "https://binance.com" + crypto;
             const response = await fetch(url);
             
             if (!response.ok) {
@@ -138,18 +138,14 @@ html
             
             const data = await response.json();
             
-            if (data.Response === "Error") {
-                throw new Error(data.Message);
-            }
-
-            const priceInUSD = data.USD;
+            const priceInUSD = parseFloat(data.price);
             const total = amount * priceInUSD;
 
-            resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString() + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الواحدة الآن: $` + priceInUSD.toLocaleString() + `</small>`;
+            resultContainer.innerHTML = `القيمة الإجمالية الحالية في السوق: <br><span style="font-size: 24px;">$` + total.toLocaleString(undefined, {maximumFractionDigits: 2}) + ` USD</span><br><small style="font-size:12px; color:#777;">سعر العملة الحية في بينانس الآن: $` + priceInUSD.toLocaleString(undefined, {maximumFractionDigits: 2}) + `</small>`;
         } catch (error) {
             resultContainer.style.backgroundColor = '#fdf2f2';
             resultContainer.style.color = '#9b1c1c';
-            resultContainer.innerHTML = `عذراً، حدث خطأ في جلب الأسعار.<br><div class="error-details">تقرير الخطأ التقني للتصحيح:<br>${error.message}</div>`;
+            resultContainer.innerHTML = `عذراً، حدث خطأ في جلب الأسعار.<br><div class="error-details">تقرير الخطأ التقني لتصحيحه:<br>${error.message}</div>`;
         }
     }
 </script>
